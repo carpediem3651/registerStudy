@@ -1,0 +1,261 @@
+<html>
+    <head>
+        <style>
+            table{
+                border: deepskyblue;
+                border-collapse: collapse;
+            }
+        </style>
+        <title>회원가입</title>
+
+        <script language="javascript">
+            //비밀번호를 확인할 때 단순패턴 정규식 사용
+            //이메일 같은 경우 이스케이핑 사용
+            const passRegExp = /^[a-zA-Z0-9]{4,12}$/; //비밀번호
+            const idRegExp = /^[a-zA-Z0-9]{4,12}$/; //아이디 
+            const emailRegExp=/^[a-zA-Z0-9]*[@][a-z0-9.]{5,}$/;//간단한 이메일만 처리
+            const yearRegExp =/^[0-9]{,4}$/;
+            let box;
+
+            function checkAll(){
+                if(!checkId()){ 
+                    return false;
+                }
+                else if(!Pass()){
+                    return false;
+                }else if(!checkPass()){
+                    return false;
+                }else if(!checkEmail()){
+                    return false;
+                }else if(!checkName()){
+                    return false;
+                }else if(!checkYear()){
+                    return false;
+                }else if(!checkBox()){
+                    return false;
+                }else if(!checkUser()){
+                    return false;
+                }
+                alert('회원가입 성공');
+                return true;
+            }
+
+            //ID를 체크하는 함수
+            function checkId(){
+                box = document.getElementById('id');
+                if(!idRegExp.test(box.value)){
+                    alert('아이디를 정확하게 적어주세요.');
+                    box.value = "";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+            //비밀번호를 체크하는 함수
+            function Pass(){
+                box = document.getElementById('password');
+                if(!idRegExp.test(box.value)){
+                    alert('비밀번호를 잘 적어주세요.');
+                    box.value = "";
+                    box.focus();
+                    return false;
+                }else if(box.value == document.getElementById('id').value){
+                    alert('비밀번호는 아이디와 같을 수 없습니다.')
+                    box.value = "";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+            //비밀번호를 한번더 적어서 맞게 썼는지 확인하는 함수
+            function checkPass(){
+                box = document.getElementById('passwordCheck');
+                if(box.value!=document.getElementById('password').value){
+                    alert('비밀번호가 서로 다릅니다.');
+                    box.value = "";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+            //이메일형식을 검사하는 함수(현재 @가 들어가지않고 @이후 5자리보다 적게 적는 경우 오류가나게만 함)
+            function checkEmail(){
+                box = document.getElementById('email');
+                if(!emailRegExp.test(box.value)){
+                    alert('이메일 형식이 아닙니다.');
+                    box.value ="";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+            //이름이 한글자일 수는 없으니 1글자 이상으로만 설정
+            function checkName(){
+                box = document.getElementById('name');
+                if(box.value.length <=1){
+                    alert('이름이 정확하지 않습니다.');
+                    box.value ="";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+            //년도는 무조건 4자리 이여만 함
+            function checkYear(){
+                box = document.getElementById('year')
+                if(!yearRegExp.test(box.value)&&box.value.length!=4){
+                    alert('년도가 정확하지 않습니다.');
+                    box.value ="";
+                    box.focus();
+                    return false;
+                }
+                return true;
+
+            //checkbox에 check가 1개 이상 될 수 있도록 설정
+            }function checkBox(){
+                let count =0;
+                box = document.getElementsByName('Interests');
+                console.log(box.length)
+                for(i=0;i<box.length;i++){
+                    if(box[i].checked){
+                        count += 1;
+                    }
+                }
+                if(count<1){
+                    alert('하나 이상 체크 부탁드립니다.')
+                    return false;
+                }
+                return true;
+            }
+            //사용자 커멘트를 10글자 이상 적도록 설정
+            function checkUser(){
+                box = document.getElementById('comment')
+                if(box.value.length<10){
+                    alert('10자 이상 적어주세요.')
+                    box.value ="";
+                    box.focus();
+                    return false;
+                }
+                return true;
+            }
+
+
+        </script>
+    </head>
+    <body background="h2.jpeg">
+        <form align = "center">
+            <table align = "center" width ="550" height ="250" border="1">
+                <tr>
+                    <td bgcolor="lightskyblue" align="center" colspan="2"><b>회원 기본 정보</b></td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>아이디:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id='id'>
+                        4~12자의 영문 대소문자와 숫자로만 입력
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>비밀번호:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id = "password" >
+                        4~12자의 영문 대소문자와 숫자로만 입력</td>
+                    </tr>
+                <tr>
+                    <td id = "passCheck" align="center " bgcolor="Lightgray"><b>비밀번호확인:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id = "passwordCheck">                    
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>메일주소:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id = "email" size = "24">
+                        예)@domain.com
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>이름:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id = "name" size = "24">
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="lightskyblue" align="center" colspan="2"><b>개인 신상 정보</b></td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>생일:</b></td>
+                    <td bgcolor="white">
+                        <input type="text" id = "year" size = "10"> 년
+                        <select name ="month">
+                            <option value="JAN">1</option>
+                            <option value="FEB">2</option>
+                            <option value="MAR">3</option>
+                            <option value="APR">4</option>
+                            <option value="MAY">5</option>
+                            <option value="JUN">6</option>
+                            <option value="JUL">7</option>
+                            <option value="AGU">8</option>
+                            <option value="SEP">9</option>
+                            <option value="OCT">10</option>
+                            <option value="NOM">11</option>
+                            <option value="DES">12</option>
+                        </select> 월
+                        <select name ="day">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select> 일
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>관심분야:</b></td>
+                    <td bgcolor="white">
+                        <input type ="checkbox" name = "Interests" value="computer">컴퓨터
+                        <input type ="checkbox" name = "Interests" value="Internet" >인터넷
+                        <input type ="checkbox" name = "Interests" value="Trip" >여행
+                        <input type ="checkbox" name = "Interests" value="Movie" >영화감상
+                        <input type ="checkbox" name = "Interests" value="Music" >음악감상
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="Lightgray"><b>자기소개:</b></td>
+                    <td bgcolor="white">
+                        <textarea rows="5" cols="40" id="comment"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <br>
+                <input type="button" value="회원 가입" onclick="checkAll()">
+                <input type="reset" value="다시 입력">
+        </form>
+    </body>
+</html>
